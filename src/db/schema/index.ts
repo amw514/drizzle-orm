@@ -1,3 +1,4 @@
+import { relations } from "drizzle-orm";
 import {
     boolean,
     index,
@@ -52,3 +53,42 @@ import {
   ]);
   
   
+
+
+
+  // Relations
+
+
+
+export const userRelations = relations(usersTable, ({ one,many }) => ({
+  userReferences: one(UserReferencesTable, {
+    fields: [usersTable.id],
+    references: [UserReferencesTable.userId],
+  }),
+  posts: many(PostTable),
+}));
+
+export const postRelations = relations(PostTable, ({ one,many }) => ({
+  author: one(usersTable, {
+    fields: [PostTable.authorId],
+    references: [usersTable.id],
+  }),
+  categories: many(CategoryTable),
+}));
+
+
+export const categoryRelations = relations(CategoryTable, ({ many }) => ({
+  posts: many(PostTable),
+}));
+
+export const postCategoryRelations = relations(PostCategoryTable, ({ one }) => ({
+  post: one(PostTable, {
+    fields: [PostCategoryTable.postId],
+    references: [PostTable.id],
+  }),
+  category: one(CategoryTable, {
+    fields: [PostCategoryTable.categoryId],
+    references: [CategoryTable.id],
+  }),
+}));
+
