@@ -77,18 +77,21 @@ export const postRelations = relations(PostTable, ({ one,many }) => ({
 }));
 
 
-export const categoryRelations = relations(CategoryTable, ({ many }) => ({
-  posts: many(PostTable),
-}));
 
-export const postCategoryRelations = relations(PostCategoryTable, ({ one }) => ({
-  post: one(PostTable, {
-    fields: [PostCategoryTable.postId],
-    references: [PostTable.id],
-  }),
-  category: one(CategoryTable, {
-    fields: [PostCategoryTable.categoryId],
-    references: [CategoryTable.id],
-  }),
-}));
+
+
+
+// user register
+
+
+export const userRegisterTable = pgTable("user_register", {
+  id: serial("id").primaryKey().notNull(),
+  name: varchar("name", { length: 255 }).notNull(),
+  email: varchar("email", { length: 255 }).notNull().unique(),
+  age: integer("age").notNull(),
+  password: varchar("password", { length: 255 }).notNull(),
+  confirmPassword: varchar("confirm_password", { length: 255 }).notNull(),
+
+});
+
 
